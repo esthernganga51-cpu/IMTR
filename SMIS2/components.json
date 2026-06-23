@@ -1,0 +1,31 @@
+{
+  "style": "radix-nova",
+  "rsc": true,
+  "tsx": true,
+  "tailwind": {
+    "css": "app/globals.css",
+    "baseColor": "neutral",
+    "cssVariables": true,
+    "prefix": ""
+  },
+  "iconLibrary": "lucide",
+  "rtl": false,
+  "aliases": {
+    "components": "@/features/course-management/components",
+    "ui": "@/features/course-management/components/ui",
+    "badge": "@/features/course-management/components/ui/badge",
+    "label": "@/features/course-management/components/ui/label",
+    "input": "@/features/course-management/components/ui/input",
+    "select": "@/features/course-management/components/ui/select",
+    "utils": "@/features/course-management/lib/utils",
+    "lib": "@/features/course-management/lib",
+    "hooks": "@/features/course-management/hooks",
+    "CoursesManagementPage": "@/features/course-management/components/CoursesManagementPage",
+    "CourseForm": "@/features/course-management/components/course-form/CourseForm",
+    "CourseList": "@/features/course-management/components/course-list/CourseList",
+    "DeleteCourseDialog": "@/features/course-management/components/delete-course-dialog/DeleteCourseDialog"
+  },
+  "menuColor": "default",
+  "menuAccent": "subtle",
+  "registries": {}
+}
