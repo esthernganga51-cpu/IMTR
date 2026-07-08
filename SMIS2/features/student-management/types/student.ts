@@ -19,8 +19,12 @@ export interface StudentFormData {
   phone: string;
   dateOfBirth: string;
   gender: Gender;
-  nationality: string;
+  studentType: "KENYAN" | "INTERNATIONAL";
+  nationalIdNumber?: string;
+  passportNumber?: string;
+  nationality?: string;
   course: string;
+
   level: string;
   intake: string;
   department: string;

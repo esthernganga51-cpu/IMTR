@@ -3,7 +3,7 @@
 import type { DashboardData } from "@/features/admin-dashboard/types/dashboard";
 import { getAcademicAdminWorkspace } from "@/features/academic-admin/actions/get-academic-admin-workspace";
 import { getCourseSummary, getEnrollmentSummary } from "@/features/course- management/courses.actions";
-import { getAllDepartments } from "@/features/department-management/department-operations";
+import { getAllDepartments } from "@/features/section-management/department-operations";
 import { getHostelOccupancyFromDb } from "@/features/hostel-management/data/hostel-db";
 import { getClearanceSummaryFromDb } from "@/features/student-clearance/data/clearance-db";
 import { getAllStaff } from "@/features/staff-management/data/staff-db";

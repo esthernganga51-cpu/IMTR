@@ -7,7 +7,7 @@ export type { CourseRecord, StudentEnrollmentRecord };
 
 type RoomStatus = "available" | "occupied" | "maintenance" | "reserved";
 
-export interface DepartmentRecord {
+export interface SectionRecord {
   id: string;
   code: string;
   name: string;
@@ -18,6 +18,7 @@ export interface DepartmentRecord {
   updatedAt?: Date;
 }
 
+
 export interface StudentRecord {
   id: string;
   admissionNumber: string;
@@ -27,8 +28,12 @@ export interface StudentRecord {
   phone: string;
   dateOfBirth: string;
   gender: "male" | "female" | "other";
-  nationality: string;
+  studentType: "KENYAN" | "INTERNATIONAL";
+  nationalIdNumber: string | null;
+  passportNumber: string | null;
+  nationality: string | null;
   course: string;
+
   level: string;
   intake: string;
   department: string;
@@ -82,18 +87,144 @@ export interface DepartmentClearanceRecord {
   updatedAt?: Date;
 }
 
+export type DepartmentRecord = SectionRecord;
+
+
+export interface BookCategoryRecord {
+  id: string;
+  name: string;
+  description?: string;
+  createdAt?: Date;
+  updatedAt?: Date;
+}
+
+export interface AuthorRecord {
+  id: string;
+  firstName: string;
+  lastName: string;
+  email?: string;
+  phone?: string;
+  createdAt?: Date;
+  updatedAt?: Date;
+}
+
+export interface PublisherRecord {
+  id: string;
+  name: string;
+  address?: string;
+  email?: string;
+  phone?: string;
+  createdAt?: Date;
+  updatedAt?: Date;
+}
+
+type BookStatus = "available" | "borrowed" | "reserved" | "lost" | "damaged";
+
+export interface BookRecord {
+  id: string;
+  isbn: string;
+  title: string;
+  barcode?: string;
+  authorId: string;
+  publisherId: string;
+  categoryId: string;
+  edition?: string;
+  yearPublished?: number;
+  shelfLocation?: string;
+  createdAt?: Date;
+  updatedAt?: Date;
+}
+
+export interface BookCopyRecord {
+  id: string;
+  bookId: string;
+  copyNumber: string;
+  status: BookStatus;
+  createdAt?: Date;
+  updatedAt?: Date;
+}
+
+export interface BorrowTransactionRecord {
+  id: string;
+  borrowerType: "student" | "staff";
+  borrowerId: string;
+  bookCopyId: string;
+  bookId: string;
+  borrowDate: Date;
+  dueDate: Date;
+  expectedReturnDate?: Date;
+  librarianProcessing?: string;
+  remarks?: string;
+  returnedAt?: Date;
+  returnCondition?: BookStatus;
+}
+
+export interface ReservationRecord {
+  id: string;
+  borrowerType: "student" | "staff";
+  borrowerId: string;
+  bookId: string;
+  reservedAt: Date;
+  expiryDate: Date;
+  position: number;
+  cancelledAt?: Date;
+}
+
+export interface FineRecord {
+  id: string;
+  transactionId: string;
+  borrowerType: "student" | "staff";
+  borrowerId: string;
+  daysOverdue: number;
+  amount: number;
+  status: "unpaid" | "paid" | "waived";
+  receiptNumber?: string;
+  paidAt?: Date;
+  createdAt?: Date;
+  updatedAt?: Date;
+}
+
+export interface LibrarySettingsRecord {
+  id: string;
+  maximumBooksPerStudent: number;
+  maximumBooksPerStaff: number;
+  borrowingPeriodDays: number;
+  finePerDay: number;
+  libraryOpeningHours?: string;
+  createdAt?: Date;
+  updatedAt?: Date;
+}
+
 interface DatabaseState {
+
   initialized: boolean;
   students: StudentRecord[];
   staff: StaffRecord[];
   departments: DepartmentRecord[];
+
+
+
   hostelRooms: HostelRoomRecord[];
   roomBookings: RoomBookingRecord[];
   studentClearances: StudentClearanceRecord[];
   departmentClearances: DepartmentClearanceRecord[];
   courses: CourseRecord[];
   enrollments: StudentEnrollmentRecord[];
+
+  // Library module
+  book_categories: BookCategoryRecord[];
+  authors: AuthorRecord[];
+  publishers: PublisherRecord[];
+  books: BookRecord[];
+  book_copies: BookCopyRecord[];
+  borrow_transactions: BorrowTransactionRecord[];
+  reservations: ReservationRecord[];
+  fines: FineRecord[];
+  library_settings: LibrarySettingsRecord[];
 }
+
+
+
 
 const database: DatabaseState = {
   initialized: false,
@@ -106,7 +237,18 @@ const database: DatabaseState = {
   departmentClearances: [],
   courses: [],
   enrollments: [],
+
+  book_categories: [],
+  authors: [],
+  publishers: [],
+  books: [],
+  book_copies: [],
+  borrow_transactions: [],
+  reservations: [],
+  fines: [],
+  library_settings: [],
 };
+
 
 function ensureInitialized() {
   if (database.initialized) {
@@ -124,7 +266,18 @@ function ensureInitialized() {
   database.departmentClearances = [];
   database.courses = [];
   database.enrollments = [];
+
+  database.book_categories = [];
+  database.authors = [];
+  database.publishers = [];
+  database.books = [];
+  database.book_copies = [];
+  database.borrow_transactions = [];
+  database.reservations = [];
+  database.fines = [];
+  database.library_settings = [];
 }
+
 
 function findById<T extends { id: string }>(collection: T[], id: string): T | null {
   return collection.find((item) => item?.id === id) || null;

@@ -25,7 +25,14 @@ export async function createStudentAction(formData: StudentFormData): Promise<St
       phone: formData.phone,
       dateOfBirth: formData.dateOfBirth,
       gender: formData.gender,
-      nationality: formData.nationality,
+      studentType: formData.studentType,
+      nationalIdNumber:
+        formData.studentType === "KENYAN" ? formData.nationalIdNumber || null : null,
+      passportNumber:
+        formData.studentType === "INTERNATIONAL" ? formData.passportNumber || null : null,
+      nationality:
+        formData.studentType === "INTERNATIONAL" ? formData.nationality || null : null,
+
       course: formData.course,
       level: formData.level,
       intake: formData.intake,
@@ -65,7 +72,17 @@ export async function updateStudentAction(
     if (formData.phone) updates.phone = formData.phone;
     if (formData.dateOfBirth) updates.dateOfBirth = formData.dateOfBirth;
     if (formData.gender) updates.gender = formData.gender;
-    if (formData.nationality) updates.nationality = formData.nationality;
+    if (formData.studentType) updates.studentType = formData.studentType;
+
+    if (formData.studentType) {
+      updates.nationalIdNumber =
+        formData.studentType === "KENYAN" ? formData.nationalIdNumber || null : null;
+      updates.passportNumber =
+        formData.studentType === "INTERNATIONAL" ? formData.passportNumber || null : null;
+      updates.nationality =
+        formData.studentType === "INTERNATIONAL" ? formData.nationality || null : null;
+    }
+
     if (formData.course) updates.course = formData.course;
     if (formData.level) updates.level = formData.level;
     if (formData.intake) updates.intake = formData.intake;

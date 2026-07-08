@@ -72,8 +72,9 @@ export async function getStudentsByDepartment(department: string): Promise<Stude
 }
 
 export async function createStudent(
-  studentData: Omit<Student, "id" | "createdAt" | "updatedAt">
+  studentData: Omit<Student, "id" | "createdAt" | "updatedAt"> 
 ): Promise<Student> {
+
   await simulateNetworkDelay();
 
   // Check if admission number already exists

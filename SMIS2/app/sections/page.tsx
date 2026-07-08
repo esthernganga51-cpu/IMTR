@@ -8,13 +8,13 @@
 import React, { useEffect, useMemo, useState } from "react";
 
 import { AdminShell } from "@/features/admin-dashboard/components/admin-shell";
-import type { DepartmentFormData } from "@/features/department-management/department-operations";
+import type { DepartmentFormData } from "@/features/section-management/department-operations";
 import {
   createDepartment,
   deleteDepartment,
   getAllDepartments,
   updateDepartment,
-} from "@/features/department-management/department-operations";
+} from "@/features/section-management/department-operations";
 
 import type { DepartmentRecord } from "@/features/lib/db/init";
 

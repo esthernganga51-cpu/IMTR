@@ -96,7 +96,13 @@ export const adminNavigationItems: AdminNavigationItem[] = [
     icon: LifeBuoy,
     label: "Support",
   },
+  {
+    href: "/library",
+    icon: BookOpenCheck,
+    label: "Library",
+  },
 ];
+
 
 
 

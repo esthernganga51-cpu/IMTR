@@ -50,7 +50,11 @@ export function StudentForm({
       ? new Date(student.dateOfBirth).toISOString().split("T")[0]
       : "",
     gender: student?.gender || "male",
+    studentType: student?.studentType || "KENYAN",
+    nationalIdNumber: student?.nationalIdNumber || "",
+    passportNumber: student?.passportNumber || "",
     nationality: student?.nationality || "",
+
     course: student?.course || "",
     level: student?.level || "",
     intake: student?.intake || "",
@@ -82,6 +86,7 @@ export function StudentForm({
   };
 
   const validateForm = (): boolean => {
+
     const newErrors: Record<string, string> = {};
 
     if (!formData.admissionNumber.trim()) {
@@ -110,9 +115,19 @@ export function StudentForm({
       newErrors.dateOfBirth = "Date of birth is required";
     }
 
-    if (!formData.nationality.trim()) {
-      newErrors.nationality = "Nationality is required";
+    if (formData.studentType === "KENYAN") {
+      if (!formData.nationalIdNumber?.trim()) {
+        newErrors.nationalIdNumber = "National ID Number is required";
+      }
+    } else {
+      if (!formData.passportNumber?.trim()) {
+        newErrors.passportNumber = "Passport Number is required";
+      }
+      if (!formData.nationality?.trim()) {
+        newErrors.nationality = "Nationality is required";
+      }
     }
+
 
     if (!formData.course.trim()) {
       newErrors.course = "Course is required";
@@ -274,20 +289,74 @@ export function StudentForm({
 
           <div>
             <label className="block text-sm font-medium text-gray-700 mb-1">
-              Nationality *
+              Student Type *
             </label>
-            <input
-              type="text"
-              value={formData.nationality}
-              onChange={(e) => handleChange("nationality", e.target.value)}
-              disabled={submitting || isLoading}
+            <select
+              value={formData.studentType}
+              onChange={(e) => handleChange("studentType", e.target.value)}
+              disabled={submitting || isLoading || !!student}
               className="w-full px-3 py-2 border border-gray-300 rounded-md text-sm focus:outline-none focus:ring-2 focus:ring-blue-500 disabled:bg-gray-100"
-              placeholder="Kenyan"
-            />
-            {errors.nationality && (
-              <p className="text-xs text-red-500 mt-1">{errors.nationality}</p>
-            )}
+            >
+              <option value="KENYAN">Kenyan Student</option>
+              <option value="INTERNATIONAL">International Student</option>
+            </select>
           </div>
+
+          {formData.studentType === "KENYAN" ? (
+            <div>
+              <label className="block text-sm font-medium text-gray-700 mb-1">
+                National ID Number *
+              </label>
+              <input
+                type="text"
+                value={formData.nationalIdNumber || ""}
+                onChange={(e) => handleChange("nationalIdNumber", e.target.value)}
+                disabled={submitting || isLoading}
+                className="w-full px-3 py-2 border border-gray-300 rounded-md text-sm focus:outline-none focus:ring-2 focus:ring-blue-500 disabled:bg-gray-100"
+                placeholder="National ID Number"
+              />
+              {errors.nationalIdNumber && (
+                <p className="text-xs text-red-500 mt-1">{errors.nationalIdNumber}</p>
+              )}
+            </div>
+          ) : (
+            <>
+              <div>
+                <label className="block text-sm font-medium text-gray-700 mb-1">
+                  Passport Number *
+                </label>
+                <input
+                  type="text"
+                  value={formData.passportNumber || ""}
+                  onChange={(e) => handleChange("passportNumber", e.target.value)}
+                  disabled={submitting || isLoading}
+                  className="w-full px-3 py-2 border border-gray-300 rounded-md text-sm focus:outline-none focus:ring-2 focus:ring-blue-500 disabled:bg-gray-100"
+                  placeholder="Passport Number"
+                />
+                {errors.passportNumber && (
+                  <p className="text-xs text-red-500 mt-1">{errors.passportNumber}</p>
+                )}
+              </div>
+
+              <div>
+                <label className="block text-sm font-medium text-gray-700 mb-1">
+                  Nationality *
+                </label>
+                <input
+                  type="text"
+                  value={formData.nationality || ""}
+                  onChange={(e) => handleChange("nationality", e.target.value)}
+                  disabled={submitting || isLoading}
+                  className="w-full px-3 py-2 border border-gray-300 rounded-md text-sm focus:outline-none focus:ring-2 focus:ring-blue-500 disabled:bg-gray-100"
+                  placeholder="e.g., Uganda"
+                />
+                {errors.nationality && (
+                  <p className="text-xs text-red-500 mt-1">{errors.nationality}</p>
+                )}
+              </div>
+            </>
+          )}
+
         </div>
       </div>
 
